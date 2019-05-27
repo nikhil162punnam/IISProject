@@ -9,7 +9,7 @@ import pickle
     Change the python environment and code file
 """
 def execute():
-    popen = subprocess.Popen(['/home/nikhil/Semester_II/Natural_ML/testvenv/bin/python', '/home/nikhil/Semester_II/IIS/Project/Final/CVsample.py'],
+    popen = subprocess.Popen(['/home/nikhil/Semester_II/Natural_ML/testvenv/bin/python', '/home/nikhil/Semester_II/IIS/Project/Final/IISProject/CVsample.py'],
                              stdout=subprocess.PIPE, universal_newlines=True)
 
     for stdout_line in iter(popen.stdout.readline, ""):
@@ -61,6 +61,8 @@ def compute_dist(feat_1, feat_2, given_df):
 def compute_feature(newList):
     final_data = (pd.DataFrame([newList], columns = columnNames))
     distance_df = pd.concat([compute_dist(eachpair[0],eachpair[1], final_data) for eachpair in distance_list_new], axis =1)
+    print('The distance features we computed from the co-ordinates are:')
+    print(distance_df,'\n')
     return distance_df
 
 # Predict the emotion based on the feature
@@ -72,8 +74,10 @@ def predict_emotion(feat_df):
 cds = []
 for path in execute():
     if(path.strip() == 'EOF'):
+        print('The co-ordinates from computer vision group are :')
+        print(cds,'\n')
         feat_df = compute_feature(cds)
-        print(predict_emotion(feat_df))
+        print('The emotion for the given set of landmarks is:',predict_emotion(feat_df),'\n')
         cds = []
     else:
-        cds.extend([ eachvalue.replace('[','').replace(']','') for eachvalue in path.strip().split() if(eachvalue.replace('[','').replace(']','')!='')])
+        cds.extend([ float(eachvalue.replace('[','').replace(']','')) for eachvalue in path.strip().split() if(eachvalue.replace('[','').replace(']','')!='')])

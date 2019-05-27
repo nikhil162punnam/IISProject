@@ -9,4 +9,4 @@ while True:
     print(sampledata)
     print('EOF')
     sys.stdout.flush()
-    time.sleep(2)
+    time.sleep(5)
